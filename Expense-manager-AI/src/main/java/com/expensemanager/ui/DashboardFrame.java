@@ -112,13 +112,13 @@ public class DashboardFrame extends JFrame {
 
     // Navigation Icons
     private static final String DASHBOARD_ICON = "📊";
-    private static final String EXPENSES_ICON = "$";
+    private static final String EXPENSES_ICON = "💰";
     private static final String ANALYTICS_ICON = "📈";
-    private static final String SETTINGS_ICON = "⚙";
+    private static final String SETTINGS_ICON = "⚙️";
     private static final String CHAT_ICON = "💬";
     private static final String ADD_ICON = "+";
-    private static final String THEME_ICON_LIGHT = "☀";
-    private static final String THEME_ICON_DARK = "☾";
+    private static final String THEME_ICON_LIGHT = "☀️";
+    private static final String THEME_ICON_DARK = "🌙";
 
     // Category Icons
     private static final String FOOD_ICON = "🍴";
@@ -286,13 +286,13 @@ public class DashboardFrame extends JFrame {
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
         // Logo
-        JLabel logoLabel = new JLabel("💰 Expense Manager");
+        JLabel logoLabel = new JLabel("Expense Manager");
         logoLabel.setFont(TITLE_FONT);
         logoLabel.setForeground(accentColor);
         logoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Welcome message
-        JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getUsername() + "! 👋");
+        JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getUsername() + "!");
         welcomeLabel.setFont(REGULAR_FONT);
         welcomeLabel.setForeground(new Color(128, 128, 128));
         welcomeLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -583,8 +583,8 @@ public class DashboardFrame extends JFrame {
                 JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
                 panel.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 
-                JButton editButton = new JButton("✏️");
-                JButton deleteButton = new JButton("🗑️");
+                JButton editButton = new JButton("Edit");
+                JButton deleteButton = new JButton("Delete");
                 styleActionButton(editButton);
                 styleActionButton(deleteButton);
 
@@ -605,8 +605,8 @@ public class DashboardFrame extends JFrame {
                 JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
                 panel.setBackground(table.getSelectionBackground());
 
-                JButton editButton = new JButton("✏️");
-                JButton deleteButton = new JButton("🗑️");
+                JButton editButton = new JButton("Edit");
+                JButton deleteButton = new JButton("Delete");
                 styleActionButton(editButton);
                 styleActionButton(deleteButton);
 
@@ -989,8 +989,8 @@ public class DashboardFrame extends JFrame {
                 JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
                 panel.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 
-                JButton editButton = new JButton("✏️");
-                JButton deleteButton = new JButton("🗑️");
+                JButton editButton = new JButton("Edit");
+                JButton deleteButton = new JButton("Delete");
                 styleActionButton(editButton);
                 styleActionButton(deleteButton);
 
@@ -1010,8 +1010,8 @@ public class DashboardFrame extends JFrame {
                 JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
                 panel.setBackground(table.getSelectionBackground());
 
-                JButton editButton = new JButton("✏️");
-                JButton deleteButton = new JButton("🗑️");
+                JButton editButton = new JButton("Edit");
+                JButton deleteButton = new JButton("Delete");
                 styleActionButton(editButton);
                 styleActionButton(deleteButton);
 
@@ -1969,7 +1969,7 @@ public class DashboardFrame extends JFrame {
             new EmptyBorder(12, 20, 12, 20)
         ));
 
-        JButton sendButton = new JButton(new String("➤".getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+        JButton sendButton = new JButton(new String("Send"));
         sendButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
         sendButton.setBackground(accentColor);
         sendButton.setForeground(Color.WHITE);
