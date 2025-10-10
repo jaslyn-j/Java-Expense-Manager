@@ -1,0 +1,4 @@
+# Ignore config.properties files
+config.properties
+Expense-manager-AI/config.properties
+Expense-manager-AI/database/config.properties
