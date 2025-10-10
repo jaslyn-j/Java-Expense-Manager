@@ -2088,49 +2088,63 @@ public class DashboardFrame extends JFrame {
     }
 
     private void addMessageBubble(JPanel container, String message, boolean isUser) {
-        JPanel bubblePanel = new JPanel(new BorderLayout(10, 5));
-        bubblePanel.setBackground(primaryColor);
-        bubblePanel.setBorder(new EmptyBorder(5, isUser ? 50 : 10, 5, isUser ? 10 : 50));
-        bubblePanel.setAlignmentX(isUser ? Component.RIGHT_ALIGNMENT : Component.LEFT_ALIGNMENT);
+        JPanel outerPanel = new JPanel(new FlowLayout(isUser ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
+        outerPanel.setOpaque(false);
+
+        JPanel bubblePanel = new JPanel();
+        bubblePanel.setLayout(new BoxLayout(bubblePanel, BoxLayout.Y_AXIS));
+        bubblePanel.setBackground(isUser ? new Color(220, 225, 255) : new Color(245, 245, 245));
+        bubblePanel.setBorder(BorderFactory.createCompoundBorder(
+            new RoundedBorder(15, isUser ? new Color(79, 93, 247, 50) : new Color(200, 200, 200, 50)),
+            new EmptyBorder(10, 15, 10, 15)
+        ));
+        bubblePanel.setAlignmentX(isUser ? Component.LEFT_ALIGNMENT : Component.RIGHT_ALIGNMENT);
 
         JTextArea textArea = new JTextArea(message);
         textArea.setFont(REGULAR_FONT);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setBackground(isUser ? new Color(79, 93, 247, 30) : new Color(200, 200, 200, 30));
+        textArea.setOpaque(false);
         textArea.setForeground(textColor);
-        textArea.setBorder(BorderFactory.createCompoundBorder(
-            new RoundedBorder(15, isUser ? new Color(79, 93, 247, 50) : new Color(200, 200, 200, 50)),
-            new EmptyBorder(10, 15, 10, 15)
-        ));
+        textArea.setBorder(null);
 
-        // Calculate preferred size based on content
-        FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
-        int maxWidth = 400; // Maximum bubble width
-        String[] lines = message.split("\n");
-        int width = 0;
-        int height = 0;
-        for (String line : lines) {
-            int lineWidth = fm.stringWidth(line);
-            width = Math.min(Math.max(width, lineWidth + 40), maxWidth); // Add padding
-            height += fm.getHeight();
-        }
-        // Add extra height for word wrap
-        height += (width < maxWidth ? 0 : (fm.getHeight() * (width / maxWidth)));
-        textArea.setPreferredSize(new Dimension(width, height + 20));
+        int maxWidth = 400;
+        Dimension prefSize = getTextAreaPreferredSize(textArea, maxWidth);
+        textArea.setPreferredSize(prefSize);
+        textArea.setMaximumSize(new Dimension(maxWidth, Integer.MAX_VALUE));
+        textArea.setMinimumSize(new Dimension(60, prefSize.height));
 
-        bubblePanel.add(textArea, BorderLayout.CENTER);
-        
-        // Add timestamp
-        JLabel timeLabel = new JLabel(new SimpleDateFormat("HH:mm").format(new Date()));
+        bubblePanel.add(textArea);
+
+        // Add timestamp below the message
+        JLabel timeLabel = new JLabel(new java.text.SimpleDateFormat("HH:mm").format(new java.util.Date()));
         timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         timeLabel.setForeground(new Color(128, 128, 128));
-        bubblePanel.add(timeLabel, isUser ? BorderLayout.WEST : BorderLayout.EAST);
+        timeLabel.setAlignmentX(isUser ? Component.LEFT_ALIGNMENT : Component.RIGHT_ALIGNMENT);
+        bubblePanel.add(Box.createVerticalStrut(4));
+        bubblePanel.add(timeLabel);
 
-        container.add(bubblePanel);
+        outerPanel.add(bubblePanel);
+        container.add(outerPanel);
         container.revalidate();
         container.repaint();
+    }
+
+    // Helper to calculate preferred size for JTextArea based on text and max width
+    private Dimension getTextAreaPreferredSize(JTextArea textArea, int maxWidth) {
+        FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
+        int maxLineWidth = 0;
+        int lines = 0;
+        for (String line : textArea.getText().split("\n")) {
+            int lineWidth = fm.stringWidth(line);
+            int lineCount = Math.max(1, (int) Math.ceil((double) lineWidth / maxWidth));
+            lines += lineCount;
+            maxLineWidth = Math.max(maxLineWidth, Math.min(lineWidth, maxWidth));
+        }
+        int width = Math.max(60, Math.min(maxLineWidth + 20, maxWidth));
+        int height = fm.getHeight() * lines + 20;
+        return new Dimension(width, height);
     }
 
     private JPanel createTypingIndicator() {
