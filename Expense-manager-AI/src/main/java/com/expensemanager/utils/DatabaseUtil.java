@@ -6,10 +6,17 @@ import java.sql.SQLException;
 
 public class DatabaseUtil {
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/expense_manager?useSSL=false&serverTimezone=UTC",
-                "root",
-                "avocadodo"
+        String host = ConfigManager.getProperty("db.host", "localhost");
+        String port = ConfigManager.getProperty("db.port", "3306");
+        String dbName = ConfigManager.getProperty("db.name", "expense_manager");
+        String user = ConfigManager.getProperty("db.user", "root");
+        String password = ConfigManager.getProperty("db.password", "");
+
+        String url = String.format(
+                "jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC",
+                host, port, dbName
         );
+
+        return DriverManager.getConnection(url, user, password);
     }
 }

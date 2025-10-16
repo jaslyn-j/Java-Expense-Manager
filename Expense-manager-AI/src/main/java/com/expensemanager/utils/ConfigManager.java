@@ -52,7 +52,12 @@ public class ConfigManager {
             throw new RuntimeException("Failed to save configuration", e);
         }
     }
-    
+
+    public static String getProperty(String key, String defaultValue) {
+        String value = properties.getProperty(key);
+        return value != null ? value.trim() : defaultValue;
+    }
+
     public static String getDeepseekAIKey() {
         String key = properties.getProperty("deepseek.api.key");
         return key != null ? key.trim() : "";
