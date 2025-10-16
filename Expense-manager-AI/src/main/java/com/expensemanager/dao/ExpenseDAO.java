@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.math.BigDecimal;
@@ -145,12 +144,10 @@ public class ExpenseDAO {
     }
     
     public void createExpense(Expense expense) throws SQLException {
-        // First get category_id from category_name
         String getCategoryIdSql = "SELECT id FROM categories WHERE name = ?";
         String insertExpenseSql = "INSERT INTO expenses (user_id, amount, date, description, category_id) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseUtil.getConnection()) {
-            // Get category ID
             int categoryId;
             try (PreparedStatement stmt = conn.prepareStatement(getCategoryIdSql)) {
                 stmt.setString(1, expense.getCategoryName());
@@ -161,8 +158,7 @@ public class ExpenseDAO {
                     categoryId = rs.getInt("id");
                 }
             }
-            
-            // Insert expense with category ID
+
             try (PreparedStatement stmt = conn.prepareStatement(insertExpenseSql)) {
                 stmt.setInt(1, expense.getUserId());
                 stmt.setBigDecimal(2, expense.getAmount());
@@ -175,12 +171,10 @@ public class ExpenseDAO {
     }
     
     public void updateExpense(Expense expense) throws SQLException {
-        // First get category_id from category_name
         String getCategoryIdSql = "SELECT id FROM categories WHERE name = ?";
         String updateExpenseSql = "UPDATE expenses SET amount = ?, date = ?, description = ?, category_id = ? WHERE id = ?";
         
         try (Connection conn = DatabaseUtil.getConnection()) {
-            // Get category ID
             int categoryId;
             try (PreparedStatement stmt = conn.prepareStatement(getCategoryIdSql)) {
                 stmt.setString(1, expense.getCategoryName());
@@ -191,8 +185,8 @@ public class ExpenseDAO {
                     categoryId = rs.getInt("id");
                 }
             }
-            
-            // Update expense
+
+
             try (PreparedStatement stmt = conn.prepareStatement(updateExpenseSql)) {
                 stmt.setBigDecimal(1, expense.getAmount());
                 stmt.setDate(2, java.sql.Date.valueOf(expense.getDate()));
@@ -343,7 +337,7 @@ public class ExpenseDAO {
                             rs.getInt("user_id"),
                             rs.getBigDecimal("amount"),
                             rs.getInt("category_id"),
-                            null, // categoryName, if needed, can be fetched with a JOIN
+                            null,
                             rs.getDate("date").toLocalDate(),
                             rs.getString("description")
                     );

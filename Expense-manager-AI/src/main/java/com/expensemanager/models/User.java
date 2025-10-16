@@ -17,7 +17,8 @@ public class User {
         this.username = username;
         this.password = password;
     }
-//getters and setters
+
+
     public int getId() {
         return id;
     }

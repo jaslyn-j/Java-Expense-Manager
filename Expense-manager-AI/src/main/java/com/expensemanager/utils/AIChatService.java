@@ -67,30 +67,26 @@ public class AIChatService {
             throw new IllegalArgumentException("Question cannot be null or empty");
         }
 
-        // Add user message to conversation history
         JSONObject userMessage = new JSONObject()
                 .put("role", "user")
                 .put("content", formatQuestionWithData(question, dashboardData));
         addToHistory(userMessage);
 
-        // Prepare the request body with OpenRouter-specific model name
         JSONObject requestBody = new JSONObject()
-                .put("model", "deepseek/deepseek-chat") // OpenRouter format
+                .put("model", "deepseek/deepseek-chat")
                 .put("messages", new JSONArray(conversationHistory))
                 .put("temperature", 0.7)
                 .put("max_tokens", 1000);
 
-        // Build the request with OpenRouter headers
         Request request = new Request.Builder()
                 .url(API_URL)
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .addHeader("Content-Type", "application/json")
-                .addHeader("HTTP-Referer", "https://expense-manager-app") // Optional but recommended
-                .addHeader("X-Title", "Expense Manager") // Optional but recommended
+                .addHeader("HTTP-Referer", "https://expense-manager-app")
+                .addHeader("X-Title", "Expense Manager")
                 .post(RequestBody.create(requestBody.toString(), JSON))
                 .build();
 
-        // Execute the request
         try (Response response = client.newCall(request).execute()) {
             String responseBody = response.body() != null ? response.body().string() : null;
 
@@ -108,14 +104,6 @@ public class AIChatService {
                     }
                 }
 
-                // Add helpful hints for common errors
-                if (response.code() == 401) {
-                    errorMessage += "\n\nPlease check your API key in Settings.";
-                } else if (response.code() == 429) {
-                    errorMessage += "\n\nRate limit exceeded. Please wait a moment.";
-                } else if (response.code() == 500) {
-                    errorMessage += "\n\nService error. Please try again.";
-                }
 
                 throw new IOException(errorMessage);
             }
@@ -128,7 +116,6 @@ public class AIChatService {
                         .getJSONObject("message")
                         .getString("content");
 
-                // Add assistant's response to conversation history
                 addToHistory(new JSONObject()
                         .put("role", "assistant")
                         .put("content", assistantResponse));
@@ -155,7 +142,6 @@ public class AIChatService {
     private void addToHistory(JSONObject message) {
         conversationHistory.add(message);
         if (conversationHistory.size() > MAX_HISTORY_SIZE) {
-            // Keep system message, remove oldest user/assistant messages
             conversationHistory.remove(1);
         }
     }
@@ -170,7 +156,6 @@ public class AIChatService {
                 description, amount
         );
 
-        // Create a single-use request (don't add to conversation history)
         JSONArray messages = new JSONArray();
         messages.put(new JSONObject()
                 .put("role", "system")
@@ -182,7 +167,7 @@ public class AIChatService {
         JSONObject requestBody = new JSONObject()
                 .put("model", "deepseek/deepseek-chat")
                 .put("messages", messages)
-                .put("temperature", 0.3) // Lower temperature for consistent categorization
+                .put("temperature", 0.3)
                 .put("max_tokens", 50);
 
         Request request = new Request.Builder()

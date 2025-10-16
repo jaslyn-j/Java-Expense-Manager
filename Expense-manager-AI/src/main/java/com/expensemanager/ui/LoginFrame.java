@@ -38,23 +38,18 @@ public class LoginFrame extends JFrame {
         setUndecorated(true);
         setShape(new RoundRectangle2D.Double(0, 0, 400, 500, 20, 20));
 
-        // Main panel with card layout
         mainPanel = new JPanel();
         cardLayout = new CardLayout();
         mainPanel.setLayout(cardLayout);
 
-        // Create panels
         createLoginPanel();
         createRegisterPanel();
 
-        // Add panels to card layout
         mainPanel.add(loginPanel, "login");
         mainPanel.add(registerPanel, "register");
 
-        // Add main panel to frame
         add(mainPanel);
 
-        // Initialize shake animation
         shakeTimer = new Timer(50, e -> {
             if (shakeCount < 10) {
                 Point p = getLocation();
@@ -67,13 +62,10 @@ public class LoginFrame extends JFrame {
             }
         });
 
-        // Make window draggable
         addDraggableMouseListener();
 
-        // Load custom font
         loadCustomFont();
 
-        // Setup icons
         setupIcons();
     }
 
@@ -82,12 +74,10 @@ public class LoginFrame extends JFrame {
         loginPanel.setBackground(Color.WHITE);
         loginPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        // Close button
         JButton closeButton = createIconButton("×", 360, 10, 30, 30);
         closeButton.addActionListener(e -> System.exit(0));
         loginPanel.add(closeButton);
 
-        // App icon and title
         JLabel iconLabel = new JLabel("💰", SwingConstants.CENTER);
         iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 48));
         iconLabel.setBounds(150, 50, 100, 60);
@@ -99,7 +89,6 @@ public class LoginFrame extends JFrame {
         titleLabel.setBounds(100, 120, 200, 30);
         loginPanel.add(titleLabel);
 
-        // Username field
         JLabel userLabel = new JLabel("👤 Username");
         userLabel.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
         userLabel.setBounds(50, 180, 300, 20);
@@ -109,7 +98,6 @@ public class LoginFrame extends JFrame {
         usernameField.setBounds(50, 205, 300, 40);
         loginPanel.add(usernameField);
 
-        // Password field
         JLabel passLabel = new JLabel("🔒 Password");
         passLabel.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
         passLabel.setBounds(50, 260, 300, 20);
@@ -120,13 +108,11 @@ public class LoginFrame extends JFrame {
         passwordField.setBounds(50, 285, 300, 40);
         loginPanel.add(passwordField);
 
-        // Login button
         loginButton = createStyledButton("LOGIN", new Color(52, 152, 219));
         loginButton.setBounds(50, 350, 300, 45);
         loginButton.addActionListener(e -> handleLogin());
         loginPanel.add(loginButton);
 
-        // Register link
         JLabel registerLabel = new JLabel("Don't have an account? Register here", SwingConstants.CENTER);
         registerLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         registerLabel.setForeground(new Color(52, 152, 219));
@@ -146,31 +132,26 @@ public class LoginFrame extends JFrame {
         registerPanel.setBackground(Color.WHITE);
         registerPanel.setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        // Close button
         JButton closeButton = createIconButton("×", 360, 10, 30, 30);
         closeButton.addActionListener(e -> System.exit(0));
         registerPanel.add(closeButton);
 
-        // Back button
         JButton backButton = createIconButton("←", 10, 10, 30, 30);
         backButton.addActionListener(e -> animateTransition("login"));
         registerPanel.add(backButton);
 
-        // Title
         JLabel titleLabel = new JLabel("Create Account", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
         titleLabel.setForeground(new Color(52, 152, 219));
         titleLabel.setBounds(100, 60, 200, 30);
         registerPanel.add(titleLabel);
 
-        // Register form fields
         JTextField regUsernameField = createStyledTextField();
         JPasswordField regPasswordField = new JPasswordField();
         JPasswordField confirmPasswordField = new JPasswordField();
         styleTextField(regPasswordField);
         styleTextField(confirmPasswordField);
 
-        // Username
         JLabel userLabel = new JLabel("👤 Username");
         userLabel.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
         userLabel.setBounds(50, 120, 300, 20);
@@ -178,7 +159,6 @@ public class LoginFrame extends JFrame {
         regUsernameField.setBounds(50, 145, 300, 40);
         registerPanel.add(regUsernameField);
 
-        // Password
         JLabel passLabel = new JLabel("🔒 Password");
         passLabel.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
         passLabel.setBounds(50, 200, 300, 20);
@@ -186,7 +166,6 @@ public class LoginFrame extends JFrame {
         regPasswordField.setBounds(50, 225, 300, 40);
         registerPanel.add(regPasswordField);
 
-        // Confirm Password
         JLabel confirmLabel = new JLabel("🔒 Confirm Password");
         confirmLabel.setFont(new Font("Segoe UI Emoji", Font.BOLD, 14));
         confirmLabel.setBounds(50, 280, 300, 20);
@@ -194,7 +173,6 @@ public class LoginFrame extends JFrame {
         confirmPasswordField.setBounds(50, 305, 300, 40);
         registerPanel.add(confirmPasswordField);
 
-        // Register button
         registerButton = createStyledButton("REGISTER", new Color(46, 204, 113));
         registerButton.setBounds(50, 380, 300, 45);
         registerButton.addActionListener(e -> {
@@ -330,7 +308,5 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    private void setupIcons() {
-        // Icons are now handled directly in createLoginPanel() and createRegisterPanel()
-    }
+    private void setupIcons() {}
 } 

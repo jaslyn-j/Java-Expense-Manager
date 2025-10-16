@@ -60,28 +60,4 @@ public class UserDAO {
         return PasswordUtil.verifyPassword(password, user.getPassword());
     }
 
-    public boolean updatePassword(int userId, String newPassword) throws SQLException {
-        String sql = "UPDATE users SET password = ? WHERE id = ?";
-        
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, PasswordUtil.hashPassword(newPassword));
-            pstmt.setInt(2, userId);
-            
-            return pstmt.executeUpdate() > 0;
-        }
-    }
-
-    public boolean deleteUser(int userId) throws SQLException {
-        String sql = "DELETE FROM users WHERE id = ?";
-        
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, userId);
-            
-            return pstmt.executeUpdate() > 0;
-        }
-    }
 } 

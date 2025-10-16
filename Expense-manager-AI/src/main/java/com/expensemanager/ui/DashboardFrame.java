@@ -73,44 +73,41 @@ public class DashboardFrame extends JFrame {
 
     private boolean isDarkTheme = false;
 
-    // UI Components
     private JPanel mainPanel;
     private JPanel sidebarPanel;
     private JPanel contentPanel;
     private CardLayout contentLayout;
 
-    // Theme Colors - Light
+    //light theme
     private static final Color PRIMARY_LIGHT = Color.WHITE;
     private static final Color SECONDARY_LIGHT = new Color(245, 245, 245);
     private static final Color ACCENT_LIGHT = Color.BLACK;
     private static final Color TEXT_LIGHT = Color.BLACK;
 
-    // Theme Colors - Dark
+    //dark theme colours
     private static final Color PRIMARY_DARK = Color.BLACK;
     private static final Color SECONDARY_DARK = new Color(30, 30, 30);
     private static final Color ACCENT_DARK = Color.WHITE;
     private static final Color TEXT_DARK = Color.WHITE;
 
-    // Border Colors
+
     private static final Color BORDER_LIGHT = new Color(220, 220, 220);
     private static final Color BORDER_DARK = new Color(50, 50, 50);
 
-    // Success/Error Colors
     private static final Color SUCCESS_COLOR = new Color(40, 40, 40);
     private static final Color ERROR_COLOR = new Color(60, 60, 60);
 
-    // Current Theme Colors
+    //current theme
     private Color primaryColor = PRIMARY_LIGHT;
     private Color secondaryColor = SECONDARY_LIGHT;
     private Color accentColor = ACCENT_LIGHT;
     private Color textColor = TEXT_LIGHT;
 
-    // Fonts
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.BOLD, 18);
     static final Font REGULAR_FONT = new Font("Segoe UI", Font.PLAIN, 14);
 
-    // Navigation Icons
+
     private static final String DASHBOARD_ICON = "📊";
     private static final String EXPENSES_ICON = "💰";
     private static final String ANALYTICS_ICON = "📈";
@@ -120,7 +117,7 @@ public class DashboardFrame extends JFrame {
     private static final String THEME_ICON_LIGHT = "☀️";
     private static final String THEME_ICON_DARK = "🌙";
 
-    // Category Icons
+
     private static final String FOOD_ICON = "🍴";
     private static final String TRANSPORT_ICON = "🚗";
     private static final String SHOPPING_ICON = "🛒";
@@ -128,7 +125,7 @@ public class DashboardFrame extends JFrame {
     private static final String BILLS_ICON = "📄";
     private static final String OTHERS_ICON = "📦";
 
-    // Action Icons
+
     private static final String EDIT_ICON = "✎";
     private static final String DELETE_ICON = "×";
     private static final String SEND_ICON = "→";
@@ -139,14 +136,14 @@ public class DashboardFrame extends JFrame {
     private static final String ERROR_ICON = "!";
     private static final String WARNING_ICON = "⚠";
 
-    // Icons using Unicode fallbacks
+
     private static final String[] ICONS = {
         "📊", "💰", "📈", "⚙️", "💬", "➕", "🌞", "🌙",  // Navigation
         "🍽️", "🚗", "🛍️", "🎮", "📝", "📦",            // Categories
         "✏️", "🗑️", "➤", "💾", "❌", "❓", "✅", "❌"    // Actions
     };
 
-    // Icon indices for easy reference
+
     private static final int DASHBOARD = 0, EXPENSES = 1, ANALYTICS = 2, SETTINGS = 3,
                             CHAT = 4, ADD = 5, THEME_LIGHT = 6, THEME_DARK = 7,
                             FOOD = 8, TRANSPORT = 9, SHOPPING = 10, ENTERTAINMENT = 11,
@@ -155,18 +152,16 @@ public class DashboardFrame extends JFrame {
                             CANCEL = 18, HELP = 19, SUCCESS = 20, ERROR = 21;
 
     static {
-        // Set system property for UTF-8 encoding
         System.setProperty("file.encoding", "UTF-8");
         try {
-            // Set default font that supports emojis
             Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 14);
             Font fallbackFont = new Font("Dialog", Font.PLAIN, 14);
             
             UIManager.put("Button.font", emojiFont);
             UIManager.put("Label.font", emojiFont);
             
-            // Set fallback font if emoji font is not available
-            if (!emojiFont.canDisplay('\u2764')) { // Simple heart character
+
+            if (!emojiFont.canDisplay('\u2764')) {
                 UIManager.put("Button.font", fallbackFont);
                 UIManager.put("Label.font", fallbackFont);
             }
@@ -179,8 +174,7 @@ public class DashboardFrame extends JFrame {
         this.currentUser = user;
         this.expenseDAO = new ExpenseDAO();
 
-        
-        // Set system property for UTF-8 encoding
+
         System.setProperty("file.encoding", "UTF-8");
         
         setupFrame();
@@ -215,10 +209,8 @@ public class DashboardFrame extends JFrame {
         setBackground(primaryColor);
         
         try {
-            // Set FlatLaf theme with custom defaults
             UIManager.setLookAndFeel(new FlatLightLaf());
-            
-            // Set custom colors
+
             UIManager.put("Panel.background", primaryColor);
             UIManager.put("Button.background", accentColor);
             UIManager.put("Button.foreground", isDarkTheme ? PRIMARY_DARK : PRIMARY_LIGHT);
@@ -230,13 +222,11 @@ public class DashboardFrame extends JFrame {
             UIManager.put("ScrollPane.background", primaryColor);
             UIManager.put("TableHeader.background", accentColor);
             UIManager.put("TableHeader.foreground", isDarkTheme ? PRIMARY_DARK : PRIMARY_LIGHT);
-            
-            // Set rounded corners
+
             UIManager.put("Button.arc", 8);
             UIManager.put("Component.arc", 8);
             UIManager.put("TextComponent.arc", 8);
-            
-            // Update UI
+
             SwingUtilities.updateComponentTreeUI(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,16 +234,13 @@ public class DashboardFrame extends JFrame {
     }
 
     private void initializeComponents() {
-        // Main Panel with Border Layout
         mainPanel = new JPanel(new BorderLayout(0, 0));
         mainPanel.setBackground(primaryColor);
 
-        // Create Content Panel with Card Layout
         contentLayout = new CardLayout();
         contentPanel = new JPanel(contentLayout);
         contentPanel.setBackground(secondaryColor);
 
-        // Create Different Views
         createDashboardView();
         createExpensesView();
         createBudgetsView();
@@ -261,13 +248,11 @@ public class DashboardFrame extends JFrame {
         createSettingsView();
         createChatView();
 
-        // Create Sidebar
         createSidebar();
 
         mainPanel.add(sidebarPanel, BorderLayout.WEST);
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Show dashboard by default
         contentLayout.show(contentPanel, "dashboard");
 
         add(mainPanel);
@@ -279,19 +264,16 @@ public class DashboardFrame extends JFrame {
         sidebarPanel.setBackground(primaryColor);
         sidebarPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(230, 230, 230)));
 
-        // Logo and Welcome Panel
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setBackground(primaryColor);
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
 
-        // Logo
         JLabel logoLabel = new JLabel("Expense Manager");
         logoLabel.setFont(TITLE_FONT);
         logoLabel.setForeground(accentColor);
         logoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Welcome message
         JLabel welcomeLabel = new JLabel("Welcome, " + currentUser.getUsername() + "!");
         welcomeLabel.setFont(REGULAR_FONT);
         welcomeLabel.setForeground(new Color(128, 128, 128));
@@ -301,7 +283,6 @@ public class DashboardFrame extends JFrame {
         topPanel.add(logoLabel);
         topPanel.add(welcomeLabel);
 
-        // Navigation Panel
         JPanel navPanel = new JPanel();
         navPanel.setLayout(new BoxLayout(navPanel, BoxLayout.Y_AXIS));
         navPanel.setBackground(primaryColor);
@@ -314,14 +295,12 @@ public class DashboardFrame extends JFrame {
         addNavButton("chat", navPanel);
         addNavButton("settings", navPanel);
 
-        // Theme Toggle and Sign Out Panel (at the bottom)
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         bottomPanel.setBackground(primaryColor);
         bottomPanel.setBorder(new EmptyBorder(10, 0, 20, 0));
 
 
-        // Theme Toggle Panel
         JPanel themePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 15));
         themePanel.setBackground(primaryColor);
         createThemeToggle(themePanel);
@@ -399,10 +378,8 @@ public class DashboardFrame extends JFrame {
         dashboardPanel.setBackground(secondaryColor);
         dashboardPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        // Header
         JPanel headerPanel = createHeaderPanel("Dashboard Overview");
 
-        // Quick Stats Panel
         JPanel statsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
         statsPanel.setBackground(secondaryColor);
 
@@ -417,21 +394,17 @@ public class DashboardFrame extends JFrame {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            // Fallback to show error or default values
             addStatCard("Total Expenses", "Error loading", "❌", statsPanel);
             addStatCard("Monthly Average", "Error loading", "❌", statsPanel);
             addStatCard("Top Category", "Error loading", "❌", statsPanel);
         }
-        // Charts Panel
         JPanel chartsPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         chartsPanel.setBackground(secondaryColor);
         addExpenseChart(chartsPanel);
         addCategoryChart(chartsPanel);
 
-        // Recent Transactions
         JPanel recentPanel = createRecentTransactionsPanel();
 
-        // Layout
         JPanel mainContent = new JPanel(new BorderLayout(20, 20));
         mainContent.setBackground(secondaryColor);
         mainContent.add(statsPanel, BorderLayout.NORTH);
@@ -497,14 +470,12 @@ public class DashboardFrame extends JFrame {
         DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
         
         try {
-            // Get real expense data
             Map<String, BigDecimal> categoryTotals = expenseDAO.getExpensesByCategory(currentUser.getId());
             categoryTotals.forEach((category, amount) -> 
                 dataset.setValue(category, amount.doubleValue())
             );
         } catch (SQLException e) {
             e.printStackTrace();
-            // Add sample data as fallback
             dataset.setValue("Food", 35);
             dataset.setValue("Transport", 25);
             dataset.setValue("Shopping", 20);
@@ -2127,6 +2098,7 @@ public class DashboardFrame extends JFrame {
 
         outerPanel.add(bubblePanel);
         container.add(outerPanel);
+        container.add(Box.createVerticalStrut(16));
         container.revalidate();
         container.repaint();
     }

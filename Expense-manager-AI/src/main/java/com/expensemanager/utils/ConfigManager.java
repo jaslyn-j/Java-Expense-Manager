@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.Properties;
 
 public class ConfigManager {
-    // Always look for config.properties in the Expense-manager-AI directory
     private static final String CONFIG_FILE = getConfigFilePath();
     private static final Properties properties = new Properties();
     
@@ -14,7 +13,6 @@ public class ConfigManager {
     }
 
     private static String getConfigFilePath() {
-        // Try to find the Expense-manager-AI directory in the current path or parent paths
         String userDir = System.getProperty("user.dir");
         File dir = new File(userDir);
         while (dir != null) {
@@ -24,7 +22,6 @@ public class ConfigManager {
             }
             dir = dir.getParentFile();
         }
-        // Fallback: use config.properties in current directory
         return "config.properties";
     }
     
@@ -32,7 +29,6 @@ public class ConfigManager {
         File configFile = new File(CONFIG_FILE);
         if (!configFile.exists()) {
             try {
-                // Create default config file if it doesn't exist
                 configFile.createNewFile();
                 properties.setProperty("deepseek.api.key", "");
                 saveConfig("Initial configuration created");
@@ -60,14 +56,6 @@ public class ConfigManager {
     public static String getDeepseekAIKey() {
         String key = properties.getProperty("deepseek.api.key");
         return key != null ? key.trim() : "";
-    }
-    
-    public static void setDeepseekAIKey(String apiKey) {
-        if (apiKey == null) {
-            throw new IllegalArgumentException("API key cannot be null");
-        }
-        properties.setProperty("deepseek.api.key", apiKey.trim());
-        saveConfig("Updated Deepseek AI API key");
     }
     
 

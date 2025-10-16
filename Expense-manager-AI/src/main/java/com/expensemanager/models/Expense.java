@@ -32,7 +32,6 @@ public class Expense {
         this.description = description;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

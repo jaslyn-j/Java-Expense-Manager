@@ -25,7 +25,6 @@ public class ExpenseDialogWithAI extends JDialog {
     public ExpenseDialogWithAI(Frame parent) {
         super(parent, "Add Expense", true);
 
-        // Initialize AI service
         try {
             String apiKey = ConfigManager.getDeepseekAIKey();
             if (apiKey != null && !apiKey.isEmpty()) {
@@ -66,7 +65,7 @@ public class ExpenseDialogWithAI extends JDialog {
     private void setupLayout() {
         setLayout(new BorderLayout(10, 10));
 
-        // Main panel
+
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -74,19 +73,17 @@ public class ExpenseDialogWithAI extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Description
+
         gbc.gridx = 0; gbc.gridy = 0;
         mainPanel.add(new JLabel("Description:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 2;
         mainPanel.add(descriptionField, gbc);
 
-        // Amount
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
         mainPanel.add(new JLabel("Amount:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 2;
         mainPanel.add(amountField, gbc);
 
-        // Category
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
         mainPanel.add(new JLabel("Category:"), gbc);
         gbc.gridx = 1; gbc.gridwidth = 1;
@@ -96,13 +93,12 @@ public class ExpenseDialogWithAI extends JDialog {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // AI status indicator
+
         if (aiService == null) {
             JLabel statusLabel = new JLabel("⚠️ AI features disabled. Configure API key in settings.");
             statusLabel.setForeground(Color.ORANGE);
@@ -132,13 +128,11 @@ public class ExpenseDialogWithAI extends JDialog {
             // Use 0 if amount is invalid
         }
 
-        // Show loading state
         suggestButton.setEnabled(false);
         suggestButton.setText("Thinking...");
 
         final double finalAmount = amount;
 
-        // Run AI request in background thread
         SwingWorker<String, Void> worker = new SwingWorker<>() {
             @Override
             protected String doInBackground() throws Exception {
@@ -150,7 +144,6 @@ public class ExpenseDialogWithAI extends JDialog {
                 try {
                     String suggestedCategory = get();
 
-                    // Find and select the suggested category
                     boolean found = false;
                     for (int i = 0; i < categoryCombo.getItemCount(); i++) {
                         if (categoryCombo.getItemAt(i).equalsIgnoreCase(suggestedCategory)) {
@@ -161,7 +154,6 @@ public class ExpenseDialogWithAI extends JDialog {
                     }
 
                     if (!found) {
-                        // If exact match not found, default to "Other"
                         categoryCombo.setSelectedItem("Other");
                     }
 
@@ -214,7 +206,6 @@ public class ExpenseDialogWithAI extends JDialog {
         return true;
     }
 
-    // Getters
     public boolean isConfirmed() {
         return confirmed;
     }
@@ -231,7 +222,6 @@ public class ExpenseDialogWithAI extends JDialog {
         return (String) categoryCombo.getSelectedItem();
     }
 
-    // Test the dialog
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
