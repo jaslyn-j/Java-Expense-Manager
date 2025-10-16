@@ -3,7 +3,7 @@ package com.expensemanager.models;
 public class User {
     private int id;
     private String username;
-    private String password; // Stored as BCrypt hash
+    private String password;
 
     public User() {}
 
@@ -17,8 +17,7 @@ public class User {
         this.username = username;
         this.password = password;
     }
-
-    // Getters and Setters
+//getters and setters
     public int getId() {
         return id;
     }

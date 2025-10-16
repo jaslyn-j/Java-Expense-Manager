@@ -58,14 +58,7 @@ public class ConfigManager {
     }
     
     public static String getDeepseekAIKey() {
-        // First try environment variable
-        String key = System.getenv("DEEPSEEK_API_KEY");
-        if (key != null && !key.trim().isEmpty()) {
-            return key.trim();
-        }
-        
-        // Then try properties file
-        key = properties.getProperty("deepseek.api.key");
+        String key = properties.getProperty("deepseek.api.key");
         return key != null ? key.trim() : "";
     }
     

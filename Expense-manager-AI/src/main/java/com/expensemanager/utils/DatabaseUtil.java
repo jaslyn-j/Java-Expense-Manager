@@ -19,7 +19,6 @@ public class DatabaseUtil {
             props.load(new FileInputStream(CONFIG_FILE));
         } catch (IOException e) {
             System.err.println("Warning: Could not load config file. Using default settings.");
-            // Default settings
             props.setProperty("db.host", "localhost");
             props.setProperty("db.port", "3306");
             props.setProperty("db.name", "expense_manager");
@@ -47,8 +46,7 @@ public class DatabaseUtil {
     public static void initializeDatabase() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
-            
-            // Create Users table
+
             stmt.execute(
                 "CREATE TABLE IF NOT EXISTS users (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -58,10 +56,9 @@ public class DatabaseUtil {
                 "full_name VARCHAR(100), " +
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+                ") DEFAULT CHARSET=utf8mb4"
             );
 
-            // Create Categories table
             stmt.execute(
                 "CREATE TABLE IF NOT EXISTS categories (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -69,10 +66,9 @@ public class DatabaseUtil {
                 "description VARCHAR(255), " +
                 "icon_name VARCHAR(50), " +
                 "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+                ") DEFAULT CHARSET=utf8mb4"
             );
 
-            // Create Expenses table
             stmt.execute(
                 "CREATE TABLE IF NOT EXISTS expenses (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -88,7 +84,7 @@ public class DatabaseUtil {
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, " +
                 "FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT, " +
                 "INDEX idx_user_date (user_id, date)" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4"
+                ") DEFAULT CHARSET=utf8mb4"
             );
 
             System.out.println("Database tables created successfully!");
