@@ -236,44 +236,9 @@ public class LoginFrame extends JFrame {
     }
 
     private void animateTransition(String targetCard) {
-        Timer timer = new Timer(1, new ActionListener() {
-            float alpha = 1.0f;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                alpha -= 0.1f;
-                if (alpha <= 0) {
-                    ((Timer)e.getSource()).stop();
-                    cardLayout.show(mainPanel, targetCard);
-                    startFadeIn();
-                } else {
-                    mainPanel.setOpaque(false);
-                    Graphics2D g2d = (Graphics2D) mainPanel.getGraphics();
-                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-                    mainPanel.paintAll(g2d);
-                }
-            }
-        });
-        timer.start();
+        cardLayout.show(mainPanel, targetCard);
     }
 
-    private void startFadeIn() {
-        Timer timer = new Timer(1, new ActionListener() {
-            float alpha = 0.0f;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                alpha += 0.1f;
-                if (alpha >= 1) {
-                    ((Timer)e.getSource()).stop();
-                } else {
-                    mainPanel.setOpaque(true);
-                    Graphics2D g2d = (Graphics2D) mainPanel.getGraphics();
-                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-                    mainPanel.paintAll(g2d);
-                }
-            }
-        });
-        timer.start();
-    }
 
     private JTextField createStyledTextField() {
         JTextField field = new JTextField();
